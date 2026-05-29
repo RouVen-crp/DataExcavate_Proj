@@ -1,0 +1,25 @@
+# Retrieval-Based Refusal and Failure Cases
+
+Status: ready-for-agent
+
+## Parent
+
+.scratch/midterm-graphrag-baseline/PRD.md
+
+## What to build
+
+Add Retrieval-Based Refusal and real Failure Case export. The system should return insufficient evidence when retrieval is weak and graph matches are absent, compute Refusal Accuracy, and select at least two real evaluated failures for report analysis.
+
+## Acceptance criteria
+
+- [ ] Weak retrieval plus absent graph match produces an insufficient-evidence answer.
+- [ ] Refusal behavior is applied consistently to baseline and GraphRAG predictions where relevant.
+- [ ] Refusal Accuracy is computed for unanswerable questions.
+- [ ] Failure Case selection identifies retrieval misses and answer/refusal failures from real predictions.
+- [ ] At least two Failure Cases are saved with query, prediction, reference, failure reason, and improvement direction.
+- [ ] Failure cases are report-ready and not invented manually.
+
+## Blocked by
+
+- .scratch/midterm-graphrag-baseline/issues/03-tfidf-rag-baseline-end-to-end.md
+- .scratch/midterm-graphrag-baseline/issues/04-rule-based-co-occurrence-graphrag-path.md

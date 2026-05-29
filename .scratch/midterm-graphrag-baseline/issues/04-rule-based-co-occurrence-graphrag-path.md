@@ -1,0 +1,24 @@
+# Rule-Based Co-Occurrence GraphRAG path
+
+Status: ready-for-agent
+
+## Parent
+
+.scratch/midterm-graphrag-baseline/PRD.md
+
+## What to build
+
+Build the graph-augmented retrieval path described by ADR-0001. Starting from TF-IDF seed evidence, extract rule-based terms, construct a Rule-Based Co-Occurrence Graph, expand one hop through related terms, rerank candidates with graph bonus, and write GraphRAG predictions plus metrics.
+
+## Acceptance criteria
+
+- [ ] Rule-based term extraction identifies useful paper terms from paragraphs and questions.
+- [ ] Co-occurring terms create graph links tied to evidence-bearing paragraphs.
+- [ ] GraphRAG retrieval starts from TF-IDF seed paragraphs.
+- [ ] One-hop graph expansion adds related evidence candidates.
+- [ ] Candidate reranking combines lexical score and graph bonus.
+- [ ] GraphRAG predictions and metrics are saved separately from TF-IDF baseline outputs.
+
+## Blocked by
+
+- .scratch/midterm-graphrag-baseline/issues/03-tfidf-rag-baseline-end-to-end.md

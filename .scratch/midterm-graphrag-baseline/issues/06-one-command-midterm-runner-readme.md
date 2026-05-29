@@ -1,0 +1,27 @@
+# One-command midterm runner and README
+
+Status: ready-for-agent
+
+## Parent
+
+.scratch/midterm-graphrag-baseline/PRD.md
+
+## What to build
+
+Create the final runnable course-submission surface: one command that runs the Midterm Dataset Slice, data audit, TF-IDF RAG Baseline, GraphRAG path, evaluation, and artifact writing. Document environment setup, commands, expected outputs, and how to use artifacts in the midterm report.
+
+## Acceptance criteria
+
+- [ ] One command runs the full midterm pipeline with default small limits.
+- [ ] CLI options allow changing maximum papers, maximum QA examples, top-k, and output directory.
+- [ ] The runner prints a concise completion summary with key metric values and artifact paths.
+- [ ] README includes setup, data download/caching behavior, one-command reproduction, and output descriptions.
+- [ ] README explains that Optional LLM Enhancement is not required for baseline reproduction.
+- [ ] README repo structure matches the generated project layout.
+
+## Blocked by
+
+- .scratch/midterm-graphrag-baseline/issues/02-midterm-dataset-slice-data-audit-findings.md
+- .scratch/midterm-graphrag-baseline/issues/03-tfidf-rag-baseline-end-to-end.md
+- .scratch/midterm-graphrag-baseline/issues/04-rule-based-co-occurrence-graphrag-path.md
+- .scratch/midterm-graphrag-baseline/issues/05-retrieval-based-refusal-failure-cases.md
