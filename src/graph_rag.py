@@ -1,0 +1,151 @@
+from __future__ import annotations
+
+import time
+from collections import defaultdict
+from typing import Any
+
+from src.answering import answer_from_evidence
+from src.retrieval import TOKEN_RE, TfidfRetriever
+
+
+STOPWORDS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "by",
+    "for",
+    "from",
+    "how",
+    "in",
+    "is",
+    "of",
+    "on",
+    "or",
+    "the",
+    "to",
+    "uses",
+    "what",
+    "when",
+    "where",
+    "which",
+    "with",
+}
+
+
+class GraphRagRetriever:
+    def __init__(self, papers: list[dict[str, Any]], tfidf: TfidfRetriever) -> None:
+        self.tfidf = tfidf
+        self.documents = {doc["paragraph_id"]: doc for doc in tfidf.documents}
+        self.paragraph_terms: dict[str, set[str]] = {}
+        self.term_paragraphs: dict[str, set[str]] = defaultdict(set)
+        self.neighbors: dict[str, set[str]] = defaultdict(set)
+        self._build_graph(papers)
+
+    @classmethod
+    def from_papers(cls, papers: list[dict[str, Any]], tfidf: TfidfRetriever | None = None) -> "GraphRagRetriever":
+        return cls(papers, tfidf or TfidfRetriever.from_papers(papers))
+
+    def retrieve(
+        self,
+        query: str,
+        paper_id: str | None = None,
+        top_k: int = 5,
+        seed_k: int = 2,
+        graph_bonus: float = 0.15,
+    ) -> list[dict[str, Any]]:
+        seeds = self.tfidf.retrieve(query, paper_id=paper_id, top_k=seed_k)
+        seed_ids = {seed["paragraph_id"] for seed in seeds}
+        query_terms = extract_terms(query)
+        expansion_terms = set(query_terms)
+        for seed in seeds:
+            seed_terms = self.paragraph_terms.get(seed["paragraph_id"], set())
+            expansion_terms.update(seed_terms)
+            for term in seed_terms | query_terms:
+                expansion_terms.update(self.neighbors.get(term, set()))
+
+        candidate_ids = set(seed_ids)
+        for term in expansion_terms:
+            candidate_ids.update(self.term_paragraphs.get(term, set()))
+
+        lexical_scores = {
+            item["paragraph_id"]: item["score"]
+            for item in self.tfidf.retrieve(query, paper_id=paper_id, top_k=len(self.tfidf.documents))
+        }
+        scored: list[dict[str, Any]] = []
+        for paragraph_id in candidate_ids:
+            document = self.documents.get(paragraph_id)
+            if not document or (paper_id is not None and document.get("paper_id") != paper_id):
+                continue
+            graph_matches = len(query_terms & self.paragraph_terms.get(paragraph_id, set()))
+            if paragraph_id not in seed_ids:
+                graph_matches += 1
+            score = lexical_scores.get(paragraph_id, 0.0) + graph_bonus * graph_matches
+            scored.append({**document, "score": score, "graph_matches": graph_matches})
+
+        scored.sort(key=lambda item: (-item["score"], str(item["paragraph_id"])))
+        return scored[:top_k]
+
+    def retrieve_with_latency(
+        self,
+        query: str,
+        paper_id: str | None = None,
+        top_k: int = 5,
+    ) -> tuple[list[dict[str, Any]], float]:
+        started = time.perf_counter()
+        evidence = self.retrieve(query=query, paper_id=paper_id, top_k=top_k)
+        return evidence, (time.perf_counter() - started) * 1000
+
+    def has_query_match(self, query: str, evidence: list[dict[str, Any]]) -> bool:
+        query_terms = extract_terms(query)
+        return any(query_terms & self.paragraph_terms.get(item.get("paragraph_id"), set()) for item in evidence)
+
+    def _build_graph(self, papers: list[dict[str, Any]]) -> None:
+        for paper in papers:
+            for paragraph in paper.get("paragraphs", []):
+                paragraph_id = paragraph.get("paragraph_id")
+                terms = extract_terms(paragraph.get("text", ""))
+                if not paragraph_id or not terms:
+                    continue
+                self.paragraph_terms[paragraph_id] = terms
+                for term in terms:
+                    self.term_paragraphs[term].add(paragraph_id)
+                for term in terms:
+                    self.neighbors[term].update(terms - {term})
+
+
+def extract_terms(text: Any) -> set[str]:
+    terms = {token.lower() for token in TOKEN_RE.findall(str(text)) if len(token) >= 4}
+    return {term for term in terms if term not in STOPWORDS}
+
+
+def run_graph_rag(
+    papers: list[dict[str, Any]],
+    qas: list[dict[str, Any]],
+    top_k: int = 5,
+) -> list[dict[str, Any]]:
+    retriever = GraphRagRetriever.from_papers(papers)
+    predictions: list[dict[str, Any]] = []
+    for qa in qas:
+        evidence, latency_ms = retriever.retrieve_with_latency(
+            qa.get("question", ""),
+            paper_id=qa.get("paper_id"),
+            top_k=top_k,
+        )
+        answer = answer_from_evidence(qa.get("question", ""), evidence)
+        predictions.append(
+            {
+                "question_id": qa.get("question_id"),
+                "paper_id": qa.get("paper_id"),
+                "question": qa.get("question", ""),
+                "predicted_answer": answer["answer"],
+                "retrieved_evidence_ids": [item["paragraph_id"] for item in evidence],
+                "retrieved_evidence": evidence,
+                "scores": [item["score"] for item in evidence],
+                "latency_ms": latency_ms,
+                "refused": answer["refused"],
+                "graph_match": retriever.has_query_match(qa.get("question", ""), evidence),
+            }
+        )
+    return predictions
