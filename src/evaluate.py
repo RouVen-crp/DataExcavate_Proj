@@ -50,6 +50,63 @@ def evaluate_predictions(
     }
 
 
+def select_failure_cases(
+    qas: list[dict[str, Any]],
+    predictions: list[dict[str, Any]],
+    limit: int = 2,
+) -> list[dict[str, Any]]:
+    prediction_by_id = {prediction.get("question_id"): prediction for prediction in predictions}
+    failures: list[dict[str, Any]] = []
+
+    for qa in qas:
+        prediction = prediction_by_id.get(qa.get("question_id"), {})
+        reason = _failure_reason(qa, prediction)
+        if not reason:
+            continue
+        failures.append(
+            {
+                "question_id": qa.get("question_id"),
+                "question": qa.get("question", prediction.get("question", "")),
+                "prediction": prediction.get("predicted_answer", ""),
+                "reference_answers": qa.get("answers", []),
+                "gold_evidence_ids": qa.get("evidence_ids", []),
+                "retrieved_evidence_ids": prediction.get("retrieved_evidence_ids", []),
+                "failure_reason": reason,
+                "improvement_direction": _improvement_direction(reason),
+            }
+        )
+        if len(failures) >= limit:
+            break
+
+    return failures
+
+
+def _failure_reason(qa: dict[str, Any], prediction: dict[str, Any]) -> str | None:
+    predicted_refusal = prediction.get("refused") or prediction.get("predicted_answer") == INSUFFICIENT_EVIDENCE
+    if qa.get("unanswerable"):
+        return None if predicted_refusal else "refusal_miss"
+
+    gold_ids = set(qa.get("evidence_ids", []))
+    retrieved_ids = set(prediction.get("retrieved_evidence_ids", []))
+    if gold_ids and not (gold_ids & retrieved_ids):
+        return "retrieval_miss"
+    if predicted_refusal:
+        return "over_refusal"
+    if qa.get("answers") and _best_answer_f1(str(prediction.get("predicted_answer", "")), qa.get("answers", [])) == 0.0:
+        return "answer_mismatch"
+    return None
+
+
+def _improvement_direction(reason: str) -> str:
+    directions = {
+        "retrieval_miss": "Improve paragraph ranking or graph expansion so annotated evidence enters top-k.",
+        "over_refusal": "Lower refusal threshold or add graph matches before refusing answerable questions.",
+        "refusal_miss": "Raise refusal threshold for weak retrieval on unanswerable questions.",
+        "answer_mismatch": "Improve sentence selection from retrieved evidence.",
+    }
+    return directions.get(reason, "Inspect retrieval and answer extraction for this question.")
+
+
 def write_json(path: str | Path, payload: Any) -> Path:
     output_path = Path(path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
