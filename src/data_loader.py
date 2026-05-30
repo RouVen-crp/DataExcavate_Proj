@@ -20,7 +20,7 @@ def load_qasper_records(source: str | Path | None = None, split: str = "train") 
             "or pass --source path/to/qasper.jsonl for an offline run."
         ) from exc
 
-    dataset = load_dataset("allenai/qasper", split=split)
+    dataset = load_dataset("allenai/qasper", split=split, trust_remote_code=True)
     return [dict(row) for row in dataset]
 
 

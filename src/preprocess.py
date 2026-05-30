@@ -157,12 +157,11 @@ def _normalize_qa(
 
 
 def _extract_answer_fields(raw_answers: Any) -> tuple[list[str], list[str], bool]:
-    answer_items = raw_answers if isinstance(raw_answers, list) else [raw_answers]
     answers: list[str] = []
     evidence_texts: list[str] = []
     unanswerable = False
 
-    for item in answer_items:
+    for item in _normalize_answer_items(raw_answers):
         answer = item.get("answer", item) if isinstance(item, dict) else item
         if not isinstance(answer, dict):
             continue
@@ -173,11 +172,68 @@ def _extract_answer_fields(raw_answers: Any) -> tuple[list[str], list[str], bool
         free_form = str(answer.get("free_form_answer") or "").strip()
         if free_form:
             answers.append(free_form)
+        yes_no = answer.get("yes_no")
+        if yes_no is True:
+            answers.append("yes")
+        elif yes_no is False:
+            answers.append("no")
         for evidence in answer.get("evidence") or []:
             if str(evidence).strip():
                 evidence_texts.append(str(evidence).strip())
 
     return _dedupe(answers), _dedupe(evidence_texts), unanswerable
+
+
+def _normalize_answer_items(raw_answers: Any) -> list[dict[str, Any]]:
+    """Convert QASPER answer payloads into a list of annotator-style dicts."""
+    if raw_answers is None:
+        return []
+    if isinstance(raw_answers, list):
+        if not raw_answers:
+            return []
+        first = raw_answers[0]
+        if isinstance(first, dict) and _is_columnar_answer_bundle(first):
+            items: list[dict[str, Any]] = []
+            for bundle in raw_answers:
+                if isinstance(bundle, dict):
+                    items.extend(_columnar_answer_bundle_to_items(bundle))
+            return items
+        if isinstance(first, dict) and _is_answer_payload(first):
+            return [{"answer": item} for item in raw_answers if isinstance(item, dict)]
+        return [item for item in raw_answers if isinstance(item, dict)]
+    if isinstance(raw_answers, dict):
+        if _is_columnar_answer_bundle(raw_answers):
+            return _columnar_answer_bundle_to_items(raw_answers)
+        if _is_answer_payload(raw_answers):
+            return [{"answer": raw_answers}]
+    return []
+
+
+def _is_columnar_answer_bundle(value: dict[str, Any]) -> bool:
+    return isinstance(value.get("answer"), list)
+
+
+def _is_answer_payload(value: dict[str, Any]) -> bool:
+    return any(key in value for key in ("extractive_spans", "free_form_answer", "evidence", "unanswerable", "yes_no"))
+
+
+def _columnar_answer_bundle_to_items(bundle: dict[str, Any]) -> list[dict[str, Any]]:
+    answer_values = bundle.get("answer") or []
+    if not isinstance(answer_values, list):
+        return []
+    annotation_ids = bundle.get("annotation_id") or []
+    worker_ids = bundle.get("worker_id") or []
+    items: list[dict[str, Any]] = []
+    for index, answer in enumerate(answer_values):
+        if not isinstance(answer, dict):
+            continue
+        item: dict[str, Any] = {"answer": answer}
+        if isinstance(annotation_ids, list) and index < len(annotation_ids):
+            item["annotation_id"] = annotation_ids[index]
+        if isinstance(worker_ids, list) and index < len(worker_ids):
+            item["worker_id"] = worker_ids[index]
+        items.append(item)
+    return items
 
 
 def _abstract_text(abstract: Any) -> str:
