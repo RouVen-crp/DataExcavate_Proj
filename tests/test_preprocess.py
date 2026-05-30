@@ -61,3 +61,43 @@ def test_tiny_qasper_fixture_writes_stable_processed_jsonl(tmp_path):
     assert qa["evidence_ids"] == ["paper-a::p0000"]
     assert qa["answers"] == ["Graph retrieval"]
     assert qa["unanswerable"] is False
+
+
+def test_hf_columnar_answers_are_normalized():
+    raw_records = [
+        {
+            "id": "paper-b",
+            "full_text": [
+                {
+                    "section_name": "Intro",
+                    "paragraphs": ["Graph retrieval links terms in paper paragraphs."],
+                }
+            ],
+            "qas": {
+                "question": ["What links terms?"],
+                "question_id": ["q-b"],
+                "answers": [
+                    {
+                        "answer": [
+                            {
+                                "extractive_spans": ["Graph retrieval"],
+                                "free_form_answer": "",
+                                "evidence": ["Graph retrieval links terms in paper paragraphs."],
+                                "unanswerable": False,
+                                "yes_no": None,
+                            }
+                        ],
+                        "annotation_id": ["ann-1"],
+                        "worker_id": ["worker-1"],
+                    }
+                ],
+            },
+        }
+    ]
+
+    _, qas = normalize_qasper_records(raw_records)
+
+    assert len(qas) == 1
+    assert qas[0]["answers"] == ["Graph retrieval"]
+    assert qas[0]["evidence"] == ["Graph retrieval links terms in paper paragraphs."]
+    assert qas[0]["evidence_ids"] == ["paper-b::p0000"]
