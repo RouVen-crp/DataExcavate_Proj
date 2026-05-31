@@ -91,7 +91,7 @@ issues 是任务拆分和进度记录。当前 7 个 issue 都已标记为 `comp
 - `src/preprocess.py`：把 QASPER-like 原始结构转换为标准 paper 和 QA JSONL。
 - `src/audit.py`：计算文档长度、段落长度、证据缺失和不可回答比例。
 - `src/retrieval.py`：纯标准库 TF-IDF 检索 baseline。
-- `src/graph_rag.py`：规则 term 抽取、共现图构建、一跳扩展和 rerank。
+- `src/graph_rag.py`：规则 term 抽取、共现图构建、一跳扩展、rerank，以及 GraphRAG trace 输出。
 - `src/answering.py`：从检索证据中选择句子回答，或输出 `INSUFFICIENT_EVIDENCE`。
 - `src/evaluate.py`：计算 Evidence Recall@5、Answer Token F1、Refusal Accuracy、平均延迟，并选择 Failure Cases。
 - `run_midterm.py`：串起完整流程并写出 report-ready artifacts。
@@ -105,6 +105,7 @@ issues 是任务拆分和进度记录。当前 7 个 issue 都已标记为 `comp
 - 数据审计输出。
 - TF-IDF RAG baseline。
 - 规则共现图 GraphRAG 路径。
+- GraphRAG trace 输出，包括 seed evidence、query terms、expanded terms、candidate evidence、returned evidence 和 graph bonus。
 - 抽取式回答与拒答。
 - 指标和失败案例导出。
 - 一键 runner。

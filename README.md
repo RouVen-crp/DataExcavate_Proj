@@ -77,7 +77,7 @@ python3 tests/run_smoke_tests.py
 - `audit.json`：数据审计结果。
 - `baseline_predictions.json`：TF-IDF RAG baseline 预测结果。
 - `baseline_metrics.json`：TF-IDF RAG baseline 指标。
-- `graphrag_predictions.json`：GraphRAG 路径预测结果。
+- `graphrag_predictions.json`：GraphRAG 路径预测结果；每条预测包含 `graph_trace`，记录 seed evidence、query terms、expanded terms、candidate evidence、returned evidence 和 graph bonus，便于解释图扩展过程。
 - `graphrag_metrics.json`：GraphRAG 路径指标。
 - `failure_cases.json`：可写入中期报告的失败案例。
 
