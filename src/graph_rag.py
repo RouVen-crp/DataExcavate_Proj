@@ -55,6 +55,23 @@ class GraphRagRetriever:
         seed_k: int = 2,
         graph_bonus: float = 0.15,
     ) -> list[dict[str, Any]]:
+        evidence, _trace = self.retrieve_with_trace(
+            query=query,
+            paper_id=paper_id,
+            top_k=top_k,
+            seed_k=seed_k,
+            graph_bonus=graph_bonus,
+        )
+        return evidence
+
+    def retrieve_with_trace(
+        self,
+        query: str,
+        paper_id: str | None = None,
+        top_k: int = 5,
+        seed_k: int = 2,
+        graph_bonus: float = 0.15,
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         seeds = self.tfidf.retrieve(query, paper_id=paper_id, top_k=seed_k)
         seed_ids = {seed["paragraph_id"] for seed in seeds}
         query_terms = extract_terms(query)
@@ -74,10 +91,12 @@ class GraphRagRetriever:
             for item in self.tfidf.retrieve(query, paper_id=paper_id, top_k=len(self.tfidf.documents))
         }
         scored: list[dict[str, Any]] = []
+        filtered_candidate_ids: set[str] = set()
         for paragraph_id in candidate_ids:
             document = self.documents.get(paragraph_id)
             if not document or (paper_id is not None and document.get("paper_id") != paper_id):
                 continue
+            filtered_candidate_ids.add(paragraph_id)
             graph_matches = len(query_terms & self.paragraph_terms.get(paragraph_id, set()))
             if paragraph_id not in seed_ids:
                 graph_matches += 1
@@ -85,17 +104,52 @@ class GraphRagRetriever:
             scored.append({**document, "score": score, "graph_matches": graph_matches})
 
         scored.sort(key=lambda item: (-item["score"], str(item["paragraph_id"])))
-        return scored[:top_k]
+        evidence = scored[:top_k]
+        trace = {
+            "seed_evidence_ids": sorted(seed_ids),
+            "query_terms": sorted(query_terms),
+            "expanded_terms": sorted(expansion_terms - query_terms),
+            "candidate_evidence_ids": sorted(filtered_candidate_ids),
+            "returned_evidence_ids": [item["paragraph_id"] for item in evidence],
+            "graph_bonus": graph_bonus,
+        }
+        return evidence, trace
 
     def retrieve_with_latency(
         self,
         query: str,
         paper_id: str | None = None,
         top_k: int = 5,
+        seed_k: int = 2,
+        graph_bonus: float = 0.15,
     ) -> tuple[list[dict[str, Any]], float]:
         started = time.perf_counter()
-        evidence = self.retrieve(query=query, paper_id=paper_id, top_k=top_k)
+        evidence = self.retrieve(
+            query=query,
+            paper_id=paper_id,
+            top_k=top_k,
+            seed_k=seed_k,
+            graph_bonus=graph_bonus,
+        )
         return evidence, (time.perf_counter() - started) * 1000
+
+    def retrieve_with_trace_and_latency(
+        self,
+        query: str,
+        paper_id: str | None = None,
+        top_k: int = 5,
+        seed_k: int = 2,
+        graph_bonus: float = 0.15,
+    ) -> tuple[list[dict[str, Any]], dict[str, Any], float]:
+        started = time.perf_counter()
+        evidence, trace = self.retrieve_with_trace(
+            query=query,
+            paper_id=paper_id,
+            top_k=top_k,
+            seed_k=seed_k,
+            graph_bonus=graph_bonus,
+        )
+        return evidence, trace, (time.perf_counter() - started) * 1000
 
     def has_query_match(self, query: str, evidence: list[dict[str, Any]]) -> bool:
         query_terms = extract_terms(query)
@@ -128,7 +182,7 @@ def run_graph_rag(
     retriever = GraphRagRetriever.from_papers(papers)
     predictions: list[dict[str, Any]] = []
     for qa in qas:
-        evidence, latency_ms = retriever.retrieve_with_latency(
+        evidence, trace, latency_ms = retriever.retrieve_with_trace_and_latency(
             qa.get("question", ""),
             paper_id=qa.get("paper_id"),
             top_k=top_k,
@@ -146,6 +200,7 @@ def run_graph_rag(
                 "latency_ms": latency_ms,
                 "refused": answer["refused"],
                 "graph_match": retriever.has_query_match(qa.get("question", ""), evidence),
+                "graph_trace": trace,
             }
         )
     return predictions

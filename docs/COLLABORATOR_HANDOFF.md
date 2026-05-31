@@ -18,13 +18,14 @@
    - unanswerable 问题比例
 5. 运行 TF-IDF RAG Baseline。
 6. 运行 Rule-Based Co-Occurrence GraphRAG。
-7. 生成抽取式回答或 `INSUFFICIENT_EVIDENCE` 拒答。
-8. 计算指标：
+7. 在 `graphrag_predictions.json` 中记录 `graph_trace`，用于解释 seed evidence、expanded terms、candidate evidence 和 graph bonus。
+8. 生成抽取式回答或 `INSUFFICIENT_EVIDENCE` 拒答。
+9. 计算指标：
    - Evidence Recall@5
    - Answer Token F1
    - Refusal Accuracy
    - Average Latency
-9. 导出 Failure Cases，用于中期报告误差分析。
+10. 导出 Failure Cases，用于中期报告误差分析。
 
 ## 当前 baseline 的主要缺陷
 
@@ -55,7 +56,7 @@
 - 增加 noun phrase / keyphrase 抽取。
 - 给 co-occurrence edge 增加频次权重。
 - 对 term 做 stopword、词形还原、大小写和符号归一。
-- 把 graph expansion 的 seed、neighbor、bonus 单独输出，方便报告解释。
+- 继续完善 graph expansion trace，例如增加更细粒度的 neighbor path 或 edge weight 说明。
 
 ### 3. 回答生成只是抽取式句子选择
 
@@ -114,7 +115,7 @@
 
 建议增加：
 
-- GraphRAG 每个问题的 seed evidence、expanded evidence、graph bonus 字段。
+- 利用 `graphrag_predictions.json` 中的 `graph_trace` 字段解释每个问题的 seed evidence、expanded terms、candidate evidence 和 graph bonus。
 - 对比表中写清楚 baseline 与 proposed method 的差异。
 - 从 `failure_cases.json` 中挑 2 个真实案例写入报告。
 
