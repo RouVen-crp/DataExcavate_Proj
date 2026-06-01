@@ -6,7 +6,7 @@
 
 最小 baseline 已完成。当前代码支持：
 
-- 读取本地 QASPER-like JSON/JSONL，或通过 HuggingFace `datasets` 下载真实 QASPER。
+- 读取本地 QASPER-like JSON/JSONL，或下载并缓存官方 QASPER v0.3 JSON。
 - 将原始数据标准化为 Processed QASPER Slice。
 - 输出 `papers.jsonl` 和 `qas.jsonl`。
 - 统计数据审计结果，包括文档/段落长度、证据缺失、不完整证据、不可回答问题比例。
@@ -19,7 +19,7 @@
 
 ## 环境配置
 
-推荐 Python 3.10+。项目核心逻辑尽量保持轻依赖；真实 QASPER 下载需要 `datasets`，测试需要 `pytest`。
+推荐 Python 3.10+。项目核心逻辑尽量保持轻依赖；真实 QASPER 会从官方 v0.3 压缩包下载并缓存到 `data/raw/qasper/`，测试需要 `pytest`。
 
 ```bash
 python3 -m venv .venv
@@ -37,6 +37,26 @@ pip install -r requirements.txt
 python3 run_midterm.py --max-papers 20 --max-qas 60 --top-k 5 --output-dir results/midterm
 ```
 
+使用真实 QASPER train split 全量数据：
+
+```bash
+python3 run_midterm.py --max-papers all --max-qas all --top-k 5 --output-dir results/qasper_train_full
+```
+
+分层运行小切片与全量对比实验：
+
+```bash
+python3 run_scale_experiments.py \
+  --scale 20:60 \
+  --scale 100:300 \
+  --scale all:all \
+  --top-k 5 \
+  --output-dir results/scale_experiments
+```
+
+`run_scale_experiments.py` 会在各规模子目录中保存完整 artifact，并额外生成
+`comparison.json`。快速复现可使用小切片；算法效果结论应以扩大规模或全量运行结果为准。
+
 使用本地离线 JSONL fixture：
 
 ```bash
@@ -45,12 +65,12 @@ python3 run_midterm.py --source path/to/qasper.jsonl --max-papers 1 --max-qas 1 
 
 常用参数：
 
-- `--source`：本地 QASPER-like JSON 或 JSONL 文件。不传时尝试通过 HuggingFace 加载 `allenai/qasper`。
-- `--max-papers`：最多处理多少篇论文，默认 20。
-- `--max-qas`：最多处理多少个 QA 样本，默认 60。
+- `--source`：本地 QASPER-like JSON 或 JSONL 文件。不传时下载并缓存官方 QASPER v0.3 JSON。
+- `--max-papers`：最多处理多少篇论文，默认 20；传入 `all` 时不限制论文数。
+- `--max-qas`：最多处理多少个 QA 样本，默认 60；传入 `all` 时不限制 QA 数。
 - `--top-k`：每个问题保留多少条证据段落，默认 5。
 - `--output-dir`：结果输出目录，默认 `results/midterm`。
-- `--split`：HuggingFace QASPER split，默认 `train`。
+- `--split`：官方 QASPER split，支持 `train`、`validation`、`test`，默认 `train`。
 
 ## 测试
 
@@ -80,6 +100,7 @@ python3 tests/run_smoke_tests.py
 - `graphrag_predictions.json`：GraphRAG 路径预测结果；每条预测包含 `graph_trace`，记录 seed evidence、query terms、expanded terms、candidate evidence、returned evidence 和 graph bonus，便于解释图扩展过程。
 - `graphrag_metrics.json`：GraphRAG 路径指标。
 - `failure_cases.json`：可写入中期报告的失败案例。
+- `run_summary.json`：本次运行的数据规模、切片上限、split 和两条路径的指标摘要。
 
 `data/raw/`、`data/processed/` 和 `results/` 已在 `.gitignore` 中排除，不应提交生成数据和结果。
 

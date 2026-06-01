@@ -1,6 +1,7 @@
 import json
 
-from run_midterm import run_pipeline
+from run_midterm import parse_optional_limit, run_pipeline
+from run_scale_experiments import run_scale_experiments
 
 
 def test_runner_writes_midterm_artifacts_from_local_fixture(tmp_path):
@@ -47,3 +48,29 @@ def test_runner_writes_midterm_artifacts_from_local_fixture(tmp_path):
     assert (tmp_path / "out" / "baseline_metrics.json").exists()
     assert (tmp_path / "out" / "graphrag_metrics.json").exists()
     assert (tmp_path / "out" / "failure_cases.json").exists()
+    assert (tmp_path / "out" / "run_summary.json").exists()
+
+
+def test_runner_supports_uncapped_local_run_and_scale_comparison(tmp_path):
+    source = tmp_path / "fixture.jsonl"
+    rows = [
+        {"id": "p1", "full_text": [], "qas": [{"question": "q1"}]},
+        {"id": "p2", "full_text": [], "qas": [{"question": "q2"}]},
+    ]
+    source.write_text("\n".join(json.dumps(row) for row in rows), encoding="utf-8")
+
+    assert parse_optional_limit("all") is None
+    assert parse_optional_limit("3") == 3
+
+    summary = run_pipeline(source=source, output_dir=tmp_path / "full", max_papers=None, max_qas=None)
+    comparisons = run_scale_experiments(
+        scales=[(1, 1), (None, None)],
+        source=source,
+        output_dir=tmp_path / "scales",
+    )
+
+    assert summary["full_dataset"]
+    assert summary["papers"] == 2
+    assert summary["qas"] == 2
+    assert [result["qas"] for result in comparisons] == [1, 2]
+    assert (tmp_path / "scales" / "comparison.json").exists()

@@ -14,8 +14,8 @@ from src.retrieval import run_tfidf_baseline
 def run_pipeline(
     source: str | Path | None = None,
     output_dir: str | Path = "results/midterm",
-    max_papers: int = 20,
-    max_qas: int = 60,
+    max_papers: int | None = 20,
+    max_qas: int | None = 60,
     top_k: int = 5,
     split: str = "train",
 ) -> dict[str, Any]:
@@ -47,24 +47,50 @@ def run_pipeline(
         failure_cases.extend(select_failure_cases(qas, baseline_predictions, limit=2 - len(failure_cases)))
     write_json(output_path / "failure_cases.json", failure_cases)
 
-    return {
+    summary = {
         "papers": len(papers),
         "qas": len(qas),
         "output_dir": str(output_path),
+        "split": split,
+        "requested_max_papers": max_papers,
+        "requested_max_qas": max_qas,
+        "full_dataset": max_papers is None and max_qas is None,
         "baseline": baseline_metrics,
         "graphrag": graphrag_metrics,
         "failure_cases": len(failure_cases),
     }
+    write_json(output_path / "run_summary.json", summary)
+    return summary
+
+
+def parse_optional_limit(value: str) -> int | None:
+    """Parse a positive slice cap or the literal 'all' for an uncapped run."""
+    if value.lower() == "all":
+        return None
+    parsed = int(value)
+    if parsed <= 0:
+        raise argparse.ArgumentTypeError("limit must be a positive integer or 'all'")
+    return parsed
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the Minimum Runnable GraphRAG Baseline.")
-    parser.add_argument("--source", default=None, help="Optional local QASPER JSON/JSONL source. Omit to load allenai/qasper.")
+    parser.add_argument("--source", default=None, help="Optional local QASPER JSON/JSONL source. Omit to download QASPER v0.3.")
     parser.add_argument("--output-dir", default="results/midterm", help="Artifact output directory.")
-    parser.add_argument("--max-papers", type=int, default=20, help="Maximum papers in the Midterm Dataset Slice.")
-    parser.add_argument("--max-qas", type=int, default=60, help="Maximum QA examples in the Midterm Dataset Slice.")
+    parser.add_argument(
+        "--max-papers",
+        type=parse_optional_limit,
+        default=20,
+        help="Maximum papers in the dataset slice, or 'all' for no paper cap.",
+    )
+    parser.add_argument(
+        "--max-qas",
+        type=parse_optional_limit,
+        default=60,
+        help="Maximum QA examples in the dataset slice, or 'all' for no QA cap.",
+    )
     parser.add_argument("--top-k", type=int, default=5, help="Number of evidence paragraphs to retrieve.")
-    parser.add_argument("--split", default="train", help="QASPER split for HuggingFace datasets.")
+    parser.add_argument("--split", default="train", help="Official QASPER split: train, validation, or test.")
     args = parser.parse_args()
 
     summary = run_pipeline(
@@ -76,6 +102,7 @@ def main() -> None:
         split=args.split,
     )
     print(f"papers={summary['papers']} qas={summary['qas']} output_dir={summary['output_dir']}")
+    print(f"full_dataset={summary['full_dataset']} split={summary['split']}")
     print(
         f"baseline_recall@{args.top_k}={summary['baseline']['evidence_recall_at_k']:.3f} "
         f"baseline_f1={summary['baseline']['answer_token_f1']:.3f}"

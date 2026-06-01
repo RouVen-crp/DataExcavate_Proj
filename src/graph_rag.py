@@ -59,6 +59,8 @@ STOPWORDS = {
 }
 
 TRACE_SAMPLE_LIMIT = 100
+EXPANSION_MATCH_WEIGHT = 0.25
+MAX_EXPANSION_MATCHES = 2
 
 
 class GraphRagRetriever:
@@ -129,22 +131,26 @@ class GraphRagRetriever:
         }
         scored: list[dict[str, Any]] = []
         filtered_candidate_ids: set[str] = set()
+        expanded_only_terms = expansion_terms - query_terms
         for paragraph_id in candidate_ids:
             document = self.documents.get(paragraph_id)
             if not document or (paper_id is not None and document.get("paper_id") != paper_id):
                 continue
             filtered_candidate_ids.add(paragraph_id)
-            graph_matches = len(query_terms & self.paragraph_terms.get(paragraph_id, set()))
-            if paragraph_id not in seed_ids:
-                graph_matches += 1
+            paragraph_terms = self.paragraph_terms.get(paragraph_id, set())
+            query_matches = len(query_terms & paragraph_terms)
+            expansion_matches = len(expanded_only_terms & paragraph_terms)
+            graph_score = query_matches + EXPANSION_MATCH_WEIGHT * min(expansion_matches, MAX_EXPANSION_MATCHES)
             lexical_score = lexical_scores.get(paragraph_id, 0.0)
-            score = lexical_score + graph_bonus * graph_matches
+            score = lexical_score + graph_bonus * graph_score
             scored.append(
                 {
                     **document,
                     "score": score,
                     "lexical_score": lexical_score,
-                    "graph_matches": graph_matches,
+                    "graph_matches": query_matches,
+                    "expansion_matches": expansion_matches,
+                    "graph_score": graph_score,
                 }
             )
 
@@ -162,6 +168,8 @@ class GraphRagRetriever:
             "candidate_evidence_count": len(candidate_evidence_ids),
             "returned_evidence_ids": [item["paragraph_id"] for item in evidence],
             "graph_bonus": graph_bonus,
+            "expansion_match_weight": EXPANSION_MATCH_WEIGHT,
+            "max_expansion_matches": MAX_EXPANSION_MATCHES,
         }
         return evidence, trace
 

@@ -48,7 +48,7 @@ docs/项目中期进展报告模板.md
 
 run_midterm.py：一键 pipeline。
 
-src/data_loader.py：本地 JSON/JSONL 或 HuggingFace QASPER 加载。
+src/data_loader.py：本地 JSON/JSONL 或官方 QASPER v0.3 下载缓存。
 
 src/preprocess.py：Processed QASPER Slice 标准化。
 
@@ -69,7 +69,7 @@ tests/：pytest-style 测试和无依赖 smoke suite。
 
 **DataExcavate GraphRAG Baseline** — 面向数据挖掘课程中期检查的 Evidence-Constrained GraphRAG QA System。
 
-- 输入：QASPER 论文数据集（本地 JSON/JSONL 或 HuggingFace `allenai/qasper`）
+- 输入：QASPER 论文数据集（本地 JSON/JSONL 或官方 QASPER v0.3 JSON）
 - 输出：数据审计报告、TF-IDF baseline 指标、GraphRAG 指标、失败案例
 - 运行环境：CPU-only，不依赖 GPU / Neo4j / dense embeddings / LLM API
 - 当前范围：最小可运行基线（Minimum Runnable GraphRAG Baseline），满足中期报告需要，不追求最优效果
@@ -85,7 +85,7 @@ raw QASPER records
     │
     ▼
 ┌─────────────────────────┐
-│  data_loader.py         │  加载本地 JSON/JSONL 或 HuggingFace QASPER
+│  data_loader.py         │  加载本地 JSON/JSONL 或下载缓存官方 QASPER v0.3 JSON
 │  preprocess.py          │  标准化 → papers.jsonl + qas.jsonl
 └─────────────────────────┘
     │
@@ -131,7 +131,7 @@ raw QASPER records
 
 | 函数 | 签名 | 作用 |
 |------|------|------|
-| `load_qasper_records` | `(source, split) -> list[dict]` | 加载。传 `source` 读本地 JSON/JSONL/JSON dict；不传则通过 `datasets` 库下载 `allenai/qasper` |
+| `load_qasper_records` | `(source, split) -> list[dict]` | 加载。传 `source` 读本地 JSON/JSONL/JSON dict；不传则下载并缓存官方 QASPER v0.3 JSON |
 | `build_processed_slice` | `(output_dir, source, split, max_papers, max_qas) -> (papers, qas)` | 加载→标准化→写 JSONL，返回标准化记录 |
 
 ### 3.2 `src/preprocess.py` — 210 行
@@ -238,7 +238,7 @@ CLI 参数：`--source` `--output-dir` `--max-papers` `--max-qas` `--top-k` `--s
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt   # 仅 datasets>=2.19, pytest>=8.0
+pip install -r requirements.txt   # 仅 pytest>=8.0
 ```
 
 ### 5.2 一键运行
@@ -311,7 +311,7 @@ python3 tests/run_smoke_tests.py     # 无 pytest 依赖的 smoke suite
 
 ### 7.4 添加新依赖
 
-当前仅 `datasets` 和 `pytest`。新增依赖必须：
+当前仅 `pytest`。新增依赖必须：
 - 不破坏 CPU-only 承诺
 - 不在必跑路径上引入 API key 依赖
 - 更新 `requirements.txt`
@@ -360,7 +360,7 @@ python3 tests/run_smoke_tests.py     # 无 pytest 依赖的 smoke suite
 ├── README.md                     # 项目说明与运行指南
 ├── AGENTS.md                     # Agent 配置（issue tracker / triage labels / domain docs）
 ├── CONTEXT.md                    # 领域术语表（13 个标准术语）
-├── requirements.txt              # 依赖：datasets>=2.19, pytest>=8.0
+├── requirements.txt              # 依赖：pytest>=8.0
 ├── run_midterm.py                # 一键入口
 ├── src/
 │   ├── data_loader.py

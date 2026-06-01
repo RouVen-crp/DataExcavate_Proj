@@ -17,3 +17,15 @@ def test_local_qasper_jsonl_loader_supports_midterm_slice_caps(tmp_path):
 
     assert [paper["paper_id"] for paper in papers] == ["p1"]
     assert len(qas) == 1
+
+
+def test_local_loader_supports_official_qasper_dict_shape(tmp_path):
+    raw_path = tmp_path / "qasper.json"
+    raw_path.write_text(
+        json.dumps({"paper-id": {"title": "Title", "full_text": [], "qas": []}}),
+        encoding="utf-8",
+    )
+
+    records = load_qasper_records(raw_path)
+
+    assert records == [{"id": "paper-id", "title": "Title", "full_text": [], "qas": []}]

@@ -87,7 +87,7 @@ issues 是任务拆分和进度记录。当前 7 个 issue 都已标记为 `comp
 
 ## 当前代码模块
 
-- `src/data_loader.py`：加载本地 JSON/JSONL 或 HuggingFace QASPER，并构建 Midterm Dataset Slice。
+- `src/data_loader.py`：加载本地 JSON/JSONL 或下载缓存官方 QASPER v0.3 JSON，并构建 Midterm Dataset Slice。
 - `src/preprocess.py`：把 QASPER-like 原始结构转换为标准 paper 和 QA JSONL。
 - `src/audit.py`：计算文档长度、段落长度、证据缺失和不可回答比例。
 - `src/retrieval.py`：纯标准库 TF-IDF 检索 baseline。
