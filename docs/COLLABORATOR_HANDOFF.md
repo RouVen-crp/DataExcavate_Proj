@@ -6,7 +6,7 @@
 
 当前 pipeline 由 `run_midterm.py` 串联：
 
-1. 加载本地 QASPER-like JSON/JSONL 或 HuggingFace QASPER。
+1. 加载本地 QASPER-like JSON/JSONL 或下载缓存官方 QASPER v0.3 JSON。
 2. 构建 Midterm Dataset Slice，默认约 20 篇论文、60 个 QA。
 3. 写出 Processed QASPER Slice：
    - `processed/papers.jsonl`

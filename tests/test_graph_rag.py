@@ -67,6 +67,7 @@ def test_graph_rag_retrieve_with_trace_exposes_expansion_state():
 
     result_ids = [item["paragraph_id"] for item in results]
     assert trace["graph_bonus"] == 0.2
+    assert trace["expansion_match_weight"] == 0.25
     assert trace["returned_evidence_ids"] == result_ids
     assert trace["seed_evidence_ids"]
     assert trace["expansion_paths"]
@@ -75,6 +76,7 @@ def test_graph_rag_retrieve_with_trace_exposes_expansion_state():
     assert "graph" in trace["query_terms"]
     assert "entity" in trace["expanded_terms"]
     assert "p1::p0001" in trace["candidate_evidence_ids"]
+    assert all("graph_score" in item for item in results)
 
 
 def test_run_graph_rag_includes_graph_trace_in_predictions():
