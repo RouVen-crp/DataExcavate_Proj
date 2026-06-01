@@ -76,8 +76,14 @@ def main() -> None:
         split=args.split,
     )
     print(f"papers={summary['papers']} qas={summary['qas']} output_dir={summary['output_dir']}")
-    print(f"baseline_recall@5={summary['baseline']['evidence_recall_at_5']:.3f} baseline_f1={summary['baseline']['answer_token_f1']:.3f}")
-    print(f"graphrag_recall@5={summary['graphrag']['evidence_recall_at_5']:.3f} graphrag_f1={summary['graphrag']['answer_token_f1']:.3f}")
+    print(
+        f"baseline_recall@{args.top_k}={summary['baseline']['evidence_recall_at_k']:.3f} "
+        f"baseline_f1={summary['baseline']['answer_token_f1']:.3f}"
+    )
+    print(
+        f"graphrag_recall@{args.top_k}={summary['graphrag']['evidence_recall_at_k']:.3f} "
+        f"graphrag_f1={summary['graphrag']['answer_token_f1']:.3f}"
+    )
     print(f"failure_cases={summary['failure_cases']}")
 
 

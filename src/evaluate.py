@@ -41,13 +41,19 @@ def evaluate_predictions(
         if prediction.get("latency_ms") is not None:
             latencies.append(float(prediction["latency_ms"]))
 
-    return {
+    evidence_recall = recall_hits / recall_total if recall_total else 0.0
+    metrics = {
         "questions": len(qas),
-        "evidence_recall_at_5": recall_hits / recall_total if recall_total else 0.0,
+        "top_k": top_k,
+        "evidence_recall_at_k": evidence_recall,
+        f"evidence_recall_at_{top_k}": evidence_recall,
         "answer_token_f1": sum(f1_values) / len(f1_values) if f1_values else 0.0,
         "refusal_accuracy": refusal_hits / refusal_total if refusal_total else 0.0,
         "average_latency_ms": sum(latencies) / len(latencies) if latencies else 0.0,
     }
+    if top_k != 5:
+        metrics["evidence_recall_at_5"] = None
+    return metrics
 
 
 def select_failure_cases(
@@ -71,6 +77,15 @@ def select_failure_cases(
                 "reference_answers": qa.get("answers", []),
                 "gold_evidence_ids": qa.get("evidence_ids", []),
                 "retrieved_evidence_ids": prediction.get("retrieved_evidence_ids", []),
+                "retrieved_evidence_preview": [
+                    {
+                        "paragraph_id": item.get("paragraph_id"),
+                        "score": item.get("score"),
+                        "text": str(item.get("text", ""))[:300],
+                    }
+                    for item in prediction.get("retrieved_evidence", [])[:3]
+                ],
+                "graph_trace": prediction.get("graph_trace"),
                 "failure_reason": reason,
                 "improvement_direction": _improvement_direction(reason),
             }

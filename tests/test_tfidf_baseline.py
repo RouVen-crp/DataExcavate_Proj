@@ -50,5 +50,34 @@ def test_tfidf_baseline_retrieves_answers_and_scores_predictions():
     assert evidence[0]["paragraph_id"] == "p1::p0000"
     assert answer["answer"] == "Graph retrieval connects evidence terms for question answering."
     assert metrics["evidence_recall_at_5"] == 1.0
+    assert metrics["evidence_recall_at_k"] == 1.0
+    assert metrics["top_k"] == 5
     assert metrics["answer_token_f1"] > 0
     assert metrics["average_latency_ms"] == 1.0
+
+
+def test_metrics_name_requested_top_k_explicitly():
+    qas = [
+        {
+            "question_id": "q1",
+            "answers": ["answer"],
+            "evidence_ids": ["p1"],
+            "unanswerable": False,
+        }
+    ]
+    predictions = [
+        {
+            "question_id": "q1",
+            "predicted_answer": "answer",
+            "retrieved_evidence_ids": ["p1"],
+            "latency_ms": 1.0,
+            "refused": False,
+        }
+    ]
+
+    metrics = evaluate_predictions(qas, predictions, top_k=1)
+
+    assert metrics["top_k"] == 1
+    assert metrics["evidence_recall_at_k"] == 1.0
+    assert metrics["evidence_recall_at_1"] == 1.0
+    assert metrics["evidence_recall_at_5"] is None
