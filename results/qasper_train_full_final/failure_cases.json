@@ -1,0 +1,863 @@
+[
+  {
+    "failure_reason": "retrieval_miss",
+    "gold_evidence_ids": [
+      "1909.00694::p0036",
+      "1909.00694::p0038"
+    ],
+    "graph_trace": {
+      "candidate_evidence_count": 15,
+      "candidate_evidence_ids": [
+        "1909.00694::p0000",
+        "1909.00694::p0001",
+        "1909.00694::p0002",
+        "1909.00694::p0003",
+        "1909.00694::p0004",
+        "1909.00694::p0007",
+        "1909.00694::p0026",
+        "1909.00694::p0032",
+        "1909.00694::p0039",
+        "1909.00694::p0041",
+        "1909.00694::p0042",
+        "1909.00694::p0044",
+        "1909.00694::p0049",
+        "1909.00694::p0050",
+        "1909.00694::p0054"
+      ],
+      "expanded_terms": [
+        "007craft",
+        "01a1",
+        "01is14013a",
+        "06a9",
+        "06cc",
+        "08ao96g",
+        "09short",
+        "0shot",
+        "1000th",
+        "1000x",
+        "100b",
+        "100d",
+        "100gb",
+        "100h",
+        "100hz",
+        "100k",
+        "100kb",
+        "100m",
+        "100n",
+        "102k",
+        "102m",
+        "103m",
+        "104k",
+        "105k",
+        "1080ti",
+        "10cm",
+        "10lang",
+        "10ms",
+        "10pp",
+        "10th",
+        "110k",
+        "110kb",
+        "110m",
+        "112m",
+        "115k",
+        "11th",
+        "120k",
+        "120m",
+        "122k",
+        "125k",
+        "126k",
+        "130k",
+        "133m",
+        "139k",
+        "13th",
+        "140fps",
+        "14x14",
+        "14x14x512",
+        "150b",
+        "150k",
+        "153k",
+        "15th",
+        "16gb",
+        "178s",
+        "17th",
+        "1800s",
+        "1880s",
+        "1890s",
+        "18th",
+        "193k",
+        "196x512",
+        "19747e",
+        "1990s",
+        "1x512",
+        "200k",
+        "2015b",
+        "2019naacl",
+        "20th",
+        "230k",
+        "26th",
+        "280m",
+        "2domain",
+        "3cosadd",
+        "3lang",
+        "45th",
+        "4lang",
+        "500n",
+        "7lang",
+        "840b",
+        "aaai",
+        "aadmi",
+        "abandoning",
+        "abbreviations",
+        "abduction",
+        "abilities",
+        "ability",
+        "ablate",
+        "ablation",
+        "able",
+        "about",
+        "above",
+        "abovementioned",
+        "abrupt",
+        "absolute",
+        "abstractive",
+        "abundant",
+        "abuse",
+        "abusive",
+        "accept",
+        "accepted"
+      ],
+      "expanded_terms_count": 120,
+      "expansion_match_weight": 0.25,
+      "expansion_paths": [
+        {
+          "expanded_term": "08ao96g",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "1000x",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "100d",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "100h",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "100k",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "100m",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "100n",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "105k",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "10cm",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "10lang",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "10ms",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "10pp",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "results"
+        },
+        {
+          "expanded_term": "100kb",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "20th",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "ability",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "ablate",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "ablation",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "able",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "about",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "above",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "absolute",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "abundant",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "abuse",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "abusive",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affected"
+        },
+        {
+          "expanded_term": "aaai",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "accept",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "accepted",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "according",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "account",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "accounting",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "accuracy",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "achieved",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "achieving",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "09short",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "among"
+        },
+        {
+          "expanded_term": "1080ti",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "among"
+        },
+        {
+          "expanded_term": "10th",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "among"
+        },
+        {
+          "expanded_term": "110k",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "among"
+        },
+        {
+          "expanded_term": "122k",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "among"
+        },
+        {
+          "expanded_term": "133m",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "among"
+        },
+        {
+          "expanded_term": "139k",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "among"
+        },
+        {
+          "expanded_term": "178s",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "among"
+        },
+        {
+          "expanded_term": "1880s",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "among"
+        },
+        {
+          "expanded_term": "1890s",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "among"
+        },
+        {
+          "expanded_term": "110m",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "analysis"
+        },
+        {
+          "expanded_term": "112m",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "analysis"
+        },
+        {
+          "expanded_term": "11th",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "analysis"
+        },
+        {
+          "expanded_term": "130k",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "analysis"
+        },
+        {
+          "expanded_term": "140fps",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "analysis"
+        },
+        {
+          "expanded_term": "14x14",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "analysis"
+        },
+        {
+          "expanded_term": "14x14x512",
+          "seed_evidence_id": "1909.00694::p0004",
+          "source_term": "analysis"
+        }
+      ],
+      "graph_bonus": 0.15,
+      "max_expansion_matches": 2,
+      "query_terms": [
+        "results"
+      ],
+      "returned_evidence_ids": [
+        "1909.00694::p0026",
+        "1909.00694::p0042",
+        "1909.00694::p0004",
+        "1909.00694::p0000",
+        "1909.00694::p0050"
+      ],
+      "seed_evidence_ids": [
+        "1909.00694::p0004",
+        "1909.00694::p0042"
+      ],
+      "use_edges": true
+    },
+    "improvement_direction": "Improve paragraph ranking or graph expansion so annotated evidence enters top-k.",
+    "prediction": "The results are shown in Table TABREF16.",
+    "question": "What are the results?",
+    "question_id": "1909.00694::9d578ddccc27dd849244d632dd0f6bf27348ad81",
+    "reference_answers": [
+      "Using all data to train: AL -- BiGRU achieved 0.843 accuracy, AL -- BERT achieved 0.863 accuracy, AL+CA+CO -- BiGRU achieved 0.866 accuracy, AL+CA+CO -- BERT achieved 0.835, accuracy, ACP -- BiGRU achieved 0.919 accuracy, ACP -- BERT achived 0.933, accuracy, ACP+AL+CA+CO -- BiGRU achieved 0.917 accuracy, ACP+AL+CA+CO -- BERT achieved 0.913 accuracy. \nUsing a subset to train: BERT achieved 0.876 accuracy using ACP (6K), BERT achieved 0.886 accuracy using ACP (6K) + AL, BiGRU achieved 0.830 accuracy using ACP (6K), BiGRU achieved 0.879 accuracy using ACP (6K) + AL + CA + CO."
+    ],
+    "retrieved_evidence_ids": [
+      "1909.00694::p0026",
+      "1909.00694::p0042",
+      "1909.00694::p0004",
+      "1909.00694::p0000",
+      "1909.00694::p0050"
+    ],
+    "retrieved_evidence_preview": [
+      {
+        "paragraph_id": "1909.00694::p0026",
+        "score": 0.23831822268520086,
+        "text": "We constructed our seed lexicon consisting of 15 positive words and 15 negative words, as shown in Section SECREF27. From the corpus of about 100 million sentences, we obtained 1.4 millions event pairs for AL, 41 millions for CA, and 6 millions for CO. We randomly selected subsets of AL event pairs "
+      },
+      {
+        "paragraph_id": "1909.00694::p0042",
+        "score": 0.2245689993891336,
+        "text": "Contrary to our expectations, supervised models (ACP) outperformed semi-supervised models (ACP+AL+CA+CO). This suggests that the training set of 0.6 million events is sufficiently large for training the models. For comparison, we trained the models with a subset (6,000 events) of the ACP dataset. As"
+      },
+      {
+        "paragraph_id": "1909.00694::p0004",
+        "score": 0.20643035892010486,
+        "text": "Learning affective events is closely related to sentiment analysis. Whereas sentiment analysis usually focuses on the polarity of what are described (e.g., movies), we work on how people are typically affected by events. In sentiment analysis, much attention has been paid to compositionality. Word-l"
+      }
+    ]
+  },
+  {
+    "failure_reason": "retrieval_miss",
+    "gold_evidence_ids": [
+      "1909.00694::p0000"
+    ],
+    "graph_trace": {
+      "candidate_evidence_count": 11,
+      "candidate_evidence_ids": [
+        "1909.00694::p0001",
+        "1909.00694::p0003",
+        "1909.00694::p0026",
+        "1909.00694::p0027",
+        "1909.00694::p0039",
+        "1909.00694::p0041",
+        "1909.00694::p0042",
+        "1909.00694::p0044",
+        "1909.00694::p0048",
+        "1909.00694::p0049",
+        "1909.00694::p0054"
+      ],
+      "expanded_terms": [
+        "007craft",
+        "01a1",
+        "01is14013a",
+        "06a9",
+        "06cc",
+        "09short",
+        "0shot",
+        "1000th",
+        "1000x",
+        "100b",
+        "100d",
+        "100gb",
+        "100h",
+        "100hz",
+        "100k",
+        "100kb",
+        "100m",
+        "102k",
+        "102m",
+        "103m",
+        "104k",
+        "107k",
+        "1080ti",
+        "109k",
+        "10cm",
+        "10lang",
+        "10ms",
+        "10th",
+        "110k",
+        "110m",
+        "113k",
+        "115k",
+        "120m",
+        "121fps",
+        "122k",
+        "122m",
+        "125k",
+        "12th",
+        "130k",
+        "133k",
+        "133th",
+        "138gb",
+        "139k",
+        "13itch",
+        "13th",
+        "148k",
+        "14x14",
+        "14x14x512",
+        "150k",
+        "153k",
+        "15th",
+        "16gb",
+        "16ms",
+        "16th",
+        "170k",
+        "175m",
+        "17th",
+        "180k",
+        "1880s",
+        "1890s",
+        "18th",
+        "1900s",
+        "190k",
+        "1910s",
+        "1950s",
+        "196x512",
+        "1970s",
+        "19747e",
+        "1980s",
+        "1990s",
+        "1993book",
+        "200k",
+        "20fine",
+        "20newsgroups",
+        "20th",
+        "237k",
+        "250k",
+        "293k",
+        "300k",
+        "31st",
+        "340m",
+        "38th",
+        "400k",
+        "500k",
+        "57gb",
+        "797k",
+        "8khz",
+        "aaai",
+        "aaai20",
+        "abalation",
+        "abandon",
+        "abbreviation",
+        "abihs",
+        "abilities",
+        "ability",
+        "ablate",
+        "ablated",
+        "ablating",
+        "ablation",
+        "ablations"
+      ],
+      "expanded_terms_count": 115,
+      "expansion_match_weight": 0.25,
+      "expansion_paths": [
+        {
+          "expanded_term": "007craft",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "06a9",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "06cc",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "0shot",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "100b",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "100h",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "100k",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "100m",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "102k",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "102m",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "103m",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "104k",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "dataset"
+        },
+        {
+          "expanded_term": "175m",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "293k",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "38th",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "abandon",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "abilities",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "ability",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "ablate",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "ablated",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "ablating",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "ablation",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "ablations",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "supervision"
+        },
+        {
+          "expanded_term": "1000th",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "labels"
+        },
+        {
+          "expanded_term": "10ms",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "labels"
+        },
+        {
+          "expanded_term": "110m",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "labels"
+        },
+        {
+          "expanded_term": "17th",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "labels"
+        },
+        {
+          "expanded_term": "1880s",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "labels"
+        },
+        {
+          "expanded_term": "1890s",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "labels"
+        },
+        {
+          "expanded_term": "18th",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "labels"
+        },
+        {
+          "expanded_term": "1900s",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "labels"
+        },
+        {
+          "expanded_term": "190k",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "labels"
+        },
+        {
+          "expanded_term": "1910s",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "labels"
+        },
+        {
+          "expanded_term": "109k",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "available"
+        },
+        {
+          "expanded_term": "115k",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "available"
+        },
+        {
+          "expanded_term": "121fps",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "available"
+        },
+        {
+          "expanded_term": "12th",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "available"
+        },
+        {
+          "expanded_term": "13itch",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "available"
+        },
+        {
+          "expanded_term": "14x14",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "available"
+        },
+        {
+          "expanded_term": "14x14x512",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "available"
+        },
+        {
+          "expanded_term": "aaai",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "able",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "about",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "above",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "accept",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "accepted",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "according",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "account",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "accounting",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "affective"
+        },
+        {
+          "expanded_term": "accuracy",
+          "seed_evidence_id": "1909.00694::p0049",
+          "source_term": "affective"
+        }
+      ],
+      "graph_bonus": 0.15,
+      "max_expansion_matches": 2,
+      "query_terms": [
+        "available",
+        "dataset",
+        "labels",
+        "supervision"
+      ],
+      "returned_evidence_ids": [
+        "1909.00694::p0049",
+        "1909.00694::p0003",
+        "1909.00694::p0039",
+        "1909.00694::p0048",
+        "1909.00694::p0027"
+      ],
+      "seed_evidence_ids": [
+        "1909.00694::p0003",
+        "1909.00694::p0049"
+      ],
+      "use_edges": true
+    },
+    "improvement_direction": "Improve paragraph ranking or graph expansion so annotated evidence enters top-k.",
+    "prediction": "Experiments show that, even with a minimal amount of supervision, the proposed method performed well.",
+    "question": "What are labels available in dataset for supervision?",
+    "question_id": "1909.00694::86abeff85f3db79cf87a8c993e5e5aa61226dc98",
+    "reference_answers": [
+      "negative",
+      "positive"
+    ],
+    "retrieved_evidence_ids": [
+      "1909.00694::p0049",
+      "1909.00694::p0003",
+      "1909.00694::p0039",
+      "1909.00694::p0048",
+      "1909.00694::p0027"
+    ],
+    "retrieved_evidence_preview": [
+      {
+        "paragraph_id": "1909.00694::p0049",
+        "score": 0.2777060926958198,
+        "text": "In this paper, we proposed to use discourse relations to effectively propagate polarities of affective events from seeds. Experiments show that, even with a minimal amount of supervision, the proposed method performed well."
+      },
+      {
+        "paragraph_id": "1909.00694::p0003",
+        "score": 0.27044673098404426,
+        "text": "We trained the models using a Japanese web corpus. Given the minimum amount of supervision, they performed well. In addition, the combination of annotated and unannotated data yielded a gain over a purely supervised baseline when labeled data were small."
+      },
+      {
+        "paragraph_id": "1909.00694::p0039",
+        "score": 0.23837394423106148,
+        "text": "Table TABREF23 shows accuracy. As the Random baseline suggests, positive and negative labels were distributed evenly. The Random+Seed baseline made use of the seed lexicon and output the corresponding label (or the reverse of it for negation) if the event's predicate is in the seed lexicon. We can s"
+      }
+    ]
+  }
+]

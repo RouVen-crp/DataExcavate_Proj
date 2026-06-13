@@ -1,0 +1,14 @@
+{
+  "answer_exact_match": 0.004306632213608958,
+  "answer_token_f1": 0.0986941049445611,
+  "average_latency_ms": 2.104717778622663,
+  "evidence_f1_at_k": 0.17768099960149,
+  "evidence_id_recall_at_k": 0.4393178916382152,
+  "evidence_precision_at_k": 0.11908614945263965,
+  "evidence_recall_at_5": 0.5321275583055688,
+  "evidence_recall_at_k": 0.5321275583055688,
+  "questions": 2593,
+  "refusal_accuracy": 0.014388489208633094,
+  "top_k": 5,
+  "unsupported_claim_rate": 0.0
+}

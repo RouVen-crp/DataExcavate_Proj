@@ -10,5 +10,4 @@ venv/
 
 data/raw/
 data/processed/
-results/
 *.log
